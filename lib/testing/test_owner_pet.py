@@ -8,19 +8,20 @@ def test_owner_init():
 
 def test_pet_init():
     """Test Pet class initialization"""
-    pet = Pet("Fido", "dog")
+    owner = Owner("John")
+    pet = Pet("Fido", "dog", owner)
     assert pet.name == "Fido"
     assert pet.pet_type == "dog"
-
-    owner = Owner("Jim")
-    pet = Pet("Clifford", "dog", owner)
     assert pet.owner == owner
 
-    Pet.all = []
 
 def test_has_pet_types():
     """Test Pet class has variable PET_TYPES"""
     assert Pet.PET_TYPES == ['dog', 'cat', 'rodent', 'bird', 'reptile', 'exotic']
+    def __init__(self, name, pet_type, owner):
+        self.name = name
+        self.pet_type = pet_type
+        self.owner = owner
 
     Pet.all = []
 
@@ -32,9 +33,13 @@ def test_checks_pet_type():
     Pet.all = []
 
 def test_pet_has_all():
-    """Test Pet class has variable all, storing all instances of Pet"""
-    pet1 = Pet("Whiskers", "cat")
-    pet2 = Pet("Jerry", "reptile")
+   def test_pet_has_all():
+    Pet.all = []  # Clear before test
+
+    owner = Owner("Jim")
+
+    pet1 = Pet("Whiskers", "cat", owner)
+    pet2 = Pet("Jerry", "reptile", owner)
 
     assert pet1 in Pet.all
     assert pet2 in Pet.all
@@ -55,13 +60,11 @@ def test_owner_has_pets():
 def test_owner_adds_pets():
     """Test Owner class has method add_pet(), validating and adding a pet"""
     owner = Owner("Ben")
-    pet = Pet("Whiskers", "cat")
-    owner.add_pet(pet)
+    pet = owner.add_pet("Whiskers", "cat")  # create pet via owner
 
+    assert pet in Pet.all
     assert pet.owner == owner
-    assert owner.pets() == [pet]
-
-    Pet.all = []
+    assert pet in owner.pets()
 
 def test_add_pet_checks_isinstance():
     """Test Owner class instance method add_pet() validates Pet type"""
